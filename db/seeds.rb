@@ -7,3 +7,29 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+
+puts "🌱 Seeding Doorkeeper applications..."
+
+if Doorkeeper::Application.count.zero?
+  Doorkeeper::Application.create!(name: "liquior", redirect_uri: "http://localhost", scopes: "")
+  puts "✅ OAuth applications seeded."
+else
+  puts "⚠️  OAuth applications already exist — skipping."
+end
+
+puts "🌱 Seeding users..."
+
+# Use `find_or_create_by` with attributes for clarity
+User.find_or_create_by!(email: "test@skysystemz.com") do |user|
+  user.password = "password"
+  user.password_confirmation = "password"
+  user.role = "admin"
+end
+
+User.find_or_create_by!(email: "admin@example.com", role: "admin") do |user|
+  user.password = "password"
+  user.password_confirmation = "password"
+end
+
+puts "✅ Admin users seeded."
+
