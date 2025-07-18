@@ -16,6 +16,36 @@ class Admin::StoresController < AdminController
   end
 
 
+  def update
+    store = Store.find_by(id: params[:id])
+
+    if store.present?
+      if store.update(store_params.except(:email))  # if you want to skip updating email
+        render json: { data: store }, status: :ok
+      else
+        render json: { errors: store.errors.full_messages }, status: :unprocessable_entity
+      end
+    else
+      render json: { error: "Store not found" }, status: :not_found
+    end
+  end
+
+  def delete
+    store = Store.find_by(id: params[:id])
+
+    if store.present?
+      if store.destroy  # if you want to skip updating email
+        render json: { error: "Store deleted successfully" }, status: :ok
+      else
+        render json: { errors: store.errors.full_messages }, status: :unprocessable_entity
+      end
+    else
+      render json: { error: "Store not found" }, status: :not_found
+    end
+  end
+  
+
+
   private
 
   def store_params
