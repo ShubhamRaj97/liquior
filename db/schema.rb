@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_07_17_103831) do
+ActiveRecord::Schema[7.2].define(version: 2025_07_21_063228) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "uuid-ossp"
 
   create_table "oauth_access_grants", force: :cascade do |t|
     t.bigint "resource_owner_id", null: false
@@ -56,6 +57,22 @@ ActiveRecord::Schema[7.2].define(version: 2025_07_17_103831) do
     t.index ["uid"], name: "index_oauth_applications_on_uid", unique: true
   end
 
+  create_table "people", force: :cascade do |t|
+    t.string "first_name"
+    t.string "last_name"
+    t.string "aadhaar_number"
+    t.text "address"
+    t.string "phone"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.uuid "uuid", default: -> { "uuid_generate_v4()" }, null: false
+    t.string "state"
+    t.string "city"
+    t.string "zip_code"
+    t.integer "user_id"
+    t.string "created_by"
+  end
+
   create_table "stores", force: :cascade do |t|
     t.string "name"
     t.string "address"
@@ -67,6 +84,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_07_17_103831) do
     t.boolean "active", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "uuid", default: -> { "uuid_generate_v4()" }, null: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -78,6 +96,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_07_17_103831) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "role"
+    t.uuid "uuid", default: -> { "uuid_generate_v4()" }, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

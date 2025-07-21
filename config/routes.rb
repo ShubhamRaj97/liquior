@@ -4,6 +4,8 @@ Rails.application.routes.draw do
 
   namespace :admin do
     resources :stores
+    # resources :users, only: [:create]
+    post 'users/register', to: 'users#create'
   end
 
     namespace :api do
